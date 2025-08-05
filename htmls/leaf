@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>나뭇잎 나뭇잎맥 구별기</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- 상단 내비게이션 -->
+  <nav class="bg-green-600 text-white p-4">
+    <div class="container mx-auto">
+      <h1 class="text-2xl font-bold">🌿 나뭇잎 나뭇잎맥 구별기</h1>
+    </div>
+  </nav>
+
+  <main class="container mx-auto px-4 py-8">
+
+    <!-- 탭 메뉴 -->
+    <div class="mb-6 flex space-x-4">
+      <button onclick="openTab('inputTab')" class="tab-btn bg-green-600 text-white px-4 py-2 rounded">✏️ 입력</button>
+      <button onclick="openTab('resultTab')" class="tab-btn bg-gray-300 text-gray-800 px-4 py-2 rounded">🧪 결과</button>
+      <button onclick="openTab('dataTab')" class="tab-btn bg-gray-300 text-gray-800 px-4 py-2 rounded">📊 데이터</button>
+    </div>
+
+    <!-- 입력 폼 -->
+    <div id="inputTab" class="tab-content active">
+      <div class="bg-white p-6 rounded-lg shadow-md max-w-md">
+        <h2 class="text-xl font-bold mb-4">📏 잎맥 구별 입력</h2>
+        <form id="leafForm" class="space-y-4" onsubmit="handleForm(event)">
+          <div>
+            <label for="length" class="block text-gray-700">잎 길이 (cm)</label>
+            <input type="number" id="length" step="0.1" required class="w-full border rounded px-3 py-2" />
+          </div>
+          <div>
+            <label for="width" class="block text-gray-700">잎 너비 (cm)</label>
+            <input type="number" id="width" step="0.1" required class="w-full border rounded px-3 py-2" />
+          </div>
+          <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">✅ 분류하기</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 결과 탭 -->
+    <div id="resultTab" class="tab-content">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-bold mb-4">🧪 분류 결과</h3>
+        <p id="resultText" class="text-lg text-green-700 font-semibold">아직 입력된 데이터가 없습니다.</p>
+      </div>
+    </div>
+
+    <!-- 데이터 탭 -->
+    <div id="dataTab" class="tab-content">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-bold mb-4">📊 샘플 데이터 (일부)</h2>
+        <div class="overflow-x-auto max-h-[400px] overflow-y-scroll border rounded text-sm">
+          <table class="min-w-full table-auto border border-gray-300">
+            <thead class="bg-gray-100 sticky top-0">
+              <tr>
+                <th class="px-4 py-2 border">이름</th>
+                <th class="px-4 py-2 border">잎 ID</th>
+                <th class="px-4 py-2 border">길이 (cm)</th>
+                <th class="px-4 py-2 border">너비 (cm)</th>
+                <th class="px-4 py-2 border">잎맥 종류</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 예시 10개 -->
+              <tr><td class="border px-4 py-1">lee</td><td class="border px-4 py-1">leaf_1</td><td class="border px-4 py-1">14.52</td><td class="border px-4 py-1">7.91</td><td class="border px-4 py-1">Maple</td></tr>
+              <tr><td class="border px-4 py-1">park</td><td class="border px-4 py-1">leaf_2</td><td class="border px-4 py-1">8.31</td><td class="border px-4 py-1">3.42</td><td class="border px-4 py-1">Ginkgo</td></tr>
+              <tr><td class="border px-4 py-1">kim</td><td class="border px-4 py-1">leaf_3</td><td class="border px-4 py-1">12.78</td><td class="border px-4 py-1">9.04</td><td class="border px-4 py-1">Oak</td></tr>
+              <tr><td class="border px-4 py-1">jung</td><td class="border px-4 py-1">leaf_98</td><td class="border px-4 py-1">6.13</td><td class="border px-4 py-1">5.97</td><td class="border px-4 py-1">Birch</td></tr>
+              <tr><td class="border px-4 py-1">kang</td><td class="border px-4 py-1">leaf_99</td><td class="border px-4 py-1">19.44</td><td class="border px-4 py-1">9.11</td><td class="border px-4 py-1">Pine</td></tr>
+              <tr><td class="border px-4 py-1">choi</td><td class="border px-4 py-1">leaf_100</td><td class="border px-4 py-1">17.25</td><td class="border px-4 py-1">8.20</td><td class="border px-4 py-1">Maple</td></tr>
+              <!-- 필요시 반복해서 100개 채울 수 있음 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 자바스크립트: 탭 기능 및 결과 출력 -->
+  <script>
+    function openTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelector(`#${tabId}`).classList.add('active');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-green-600', 'text-white'));
+      event.target.classList.add('bg-green-600', 'text-white');
+    }
+
+    function handleForm(event) {
+      event.preventDefault();
+      const length = parseFloat(document.getElementById('length').value);
+      const width = parseFloat(document.getElementById('width').value);
+
+      // 샘플 분류 로직 (기계학습 대체용)
+      let kind = '';
+      if (length > 15 && width > 7) kind = "Maple";
+      else if (length < 10 && width > 6) kind = "Birch";
+      else if (length < 10) kind = "Ginkgo";
+      else if (width > 8) kind = "Oak";
+      else kind = "Pine";
+
+      const result = `입력된 길이 ${length}cm, 너비 ${width}cm의 잎은 <strong>${kind}</strong> 잎맥으로 분류됩니다.`;
+
+      document.getElementById('resultText').innerHTML = result;
+      openTab('resultTab');
+    }
+  </script>
+
+</body>
+</html>
