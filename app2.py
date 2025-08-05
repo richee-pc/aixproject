@@ -64,7 +64,16 @@ with col1:
         # # plt.savefig('./images/mygraph.png')
         # st.image('./images/mygraph.png')
         # st.plotly_chart(fig, config = {'scrollZoom': False})
+    
+    with st.expander('SubContent5...'):
+        st.subheader('HTML Content...')
+        import streamlit.components.v1 as htmlviewer
+        with open('./htmls/leaf.html', 'r', encoding='utf-8') as f:
+            html2 = f.read()
+            f.close()
+        htmlviewer.html(html2, height=800,scrolling=True)
 
 with col2:
     with st.expander('Tips...'):
+
         st.info('Tips.........')
